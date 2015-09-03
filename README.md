@@ -14,9 +14,9 @@ To have simplified log levels where a supporting angular module's log levels are
 ```js
 angular.module('someApp', ['nemLogging'])
 //note this can be any type of injectable angular dependency (factory, service.. etc)
-.controller("someController", function ($scope, nemLogger) {
-  nemLogger.doLog = true; //default is true
-  nemLogger.currentLevel = nemLogger.LEVELS.debug;//defaults to error only
+.controller("someController", function ($scope, nemSimpleLogger) {
+  nemSimpleLogger.doLog = true; //default is true
+  nemSimpleLogger.currentLevel = nemSimpleLogger.LEVELS.debug;//defaults to error only
 });  
 ```
 
@@ -26,18 +26,18 @@ angular.module('someApp', ['nemLogging'])
 ```js
 angular.module('someApp', ['nemLogging'])
 //note this can be any type of injectable angular dependency (factory, service.. etc)
-.service("apiLogger", function ($scope, nemLogger) {
-  var logger = nemLogger.spawn();
+.service("apiLogger", function ($scope, nemSimpleLogger) {
+  var logger = nemSimpleLogger.spawn();
   logger.currentLevel = logger.LEVELS.warn;
   return logger;
 })
-.service("businessLogicLogger", function ($scope, nemLogger) {
-  var logger = nemLogger.spawn();
+.service("businessLogicLogger", function ($scope, nemSimpleLogger) {
+  var logger = nemSimpleLogger.spawn();
   logger.currentLevel = logger.LEVELS.error;
   return logger;
 })
-.service("terseLogger", function ($scope, nemLogger) {
-  var logger = nemLogger.spawn();
+.service("terseLogger", function ($scope, nemSimpleLogger) {
+  var logger = nemSimpleLogger.spawn();
   logger.currentLevel = logger.LEVELS.info;
   return logger;
 });  
