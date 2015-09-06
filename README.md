@@ -40,7 +40,30 @@ angular.module('someApp', ['nemLogging'])
   var logger = nemSimpleLogger.spawn();
   logger.currentLevel = logger.LEVELS.info;
   return logger;
-});  
+});
+```
+
+### Use your new creations!
+
+```js
+angular.module('someApp', ['nemLogging'])
+//note this can be any type of injectable angular dependency (factory, service.. etc)
+.service("booksApi", function (apiLogger, $http) {
+  //do something with your books
+  $http.get("/ap/books").then(function(data){
+    apiLogger.debug("books have come yay!");
+  });
+})
+.controller("businessCtrl", function ($scope, businessLogicLogger, book) {
+  businessLogicLogger.debug("new book");
+  var b = new book();
+  $scope.books = [b];
+})
+.controller("appCtrl", function ($rootScope, terseLogger) {
+  $rootScope.$on "error", function(){
+    terseLogger.error("something happened");
+  }
+});
 ```
 
 ### API
