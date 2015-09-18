@@ -6,6 +6,7 @@ coffeelint = require 'gulp-coffeelint'
 coffee = require 'gulp-coffee'
 concat = require 'gulp-concat'
 {log} = require 'gulp-util'
+uglify = require 'gulp-uglify'
 
 coffeeOptions =
   bare: true
@@ -30,4 +31,9 @@ gulp.task 'build', ->
   .pipe gulpif(/[.]coffee$/,coffee(coffeeOptions).on('error', log))
   .pipe(insert.prepend(header))
   .pipe concat 'index.js'
+  .pipe(gulp.dest 'dist' )
+  .pipe concat 'angular-simple-logger.js'
+  .pipe(gulp.dest 'dist' )
+  .pipe uglify()
+  .pipe concat 'angular-simple-logger.min.js'
   .pipe(gulp.dest 'dist' )

@@ -1,8 +1,8 @@
 {
   "name": "angular-simple-logger",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Basic logger with level logging which can also be independent.",
-  "main": "./dist/index.js",
+  "main": "./dist/angular-simple-logger.js",
   "scripts": {
     "start": "gulp",
     "test": "gulp spec"
@@ -32,6 +32,7 @@
     "gulp-open": "^1.0.0",
     "gulp-replace": "^0.5.4",
     "gulp-task-listing": "^1.0.1",
+    "gulp-uglify": "^1.4.1",
     "gulp-util": "^3.0.6",
     "jasmine-core": "^2.3.4",
     "karma": "^0.13.9",

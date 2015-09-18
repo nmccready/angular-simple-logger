@@ -22,5 +22,5 @@ Package.onUse(function(api) {
     'angular:angular@1.2.0',
   ], where);
 
-  api.addFiles('dist/index.js', where);
+  api.addFiles('dist/angular-simple-logger.js', where);
 });
