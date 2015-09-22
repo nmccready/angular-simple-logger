@@ -1,9 +1,9 @@
 /**
  *  angular-simple-logger
  *
- * @version: 0.0.3
+ * @version: 0.0.4
  * @author: Nicholas McCready
- * @date: Tue Sep 22 2015 16:59:15 GMT-0400 (EDT)
+ * @date: Tue Sep 22 2015 17:09:12 GMT-0400 (EDT)
  * @license: MIT
  */var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
