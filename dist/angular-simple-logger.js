@@ -1,9 +1,9 @@
 /**
  *  angular-simple-logger
  *
- * @version: 0.0.2
+ * @version: 0.0.3
  * @author: Nicholas McCready
- * @date: Tue Sep 22 2015 14:41:42 GMT-0400 (EDT)
+ * @date: Tue Sep 22 2015 14:43:31 GMT-0400 (EDT)
  * @license: MIT
  */angular.module('nemLogging', []).provider('nemSimpleLogger', function() {
   this.$get = [
