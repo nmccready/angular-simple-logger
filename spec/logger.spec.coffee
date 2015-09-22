@@ -1,27 +1,31 @@
 describe 'nemLogging.nemSimpleLogger', ->
   beforeEach ->
+    @createSpyLogger = ->
+      @info = ->
+      @debug = ->
+      @warn = ->
+      @error = ->
+
+      spyOn(@, 'info')
+      spyOn(@, 'debug')
+      spyOn(@, 'warn')
+      spyOn(@, 'error')
+      @
+
+    $log = @createSpyLogger()
+    @log = $log
+
+    angular.module('nemLogging').config ($provide) ->
+      #decorate w/ spys
+      $provide.decorator '$log', ($delegate) ->
+        return $log
+
     angular.mock.module('nemLogging')
-    inject ['$rootScope', 'nemSimpleLogger', ($rootScope, $log) =>
-      @scope = $rootScope.$new()
-      @subject = $log
-      @createSpyLogger = ->
-        @info = ->
-        @debug = ->
-        @warn = ->
-        @error = ->
-
-        spyOn(@, 'info')
-        spyOn(@, 'debug')
-        spyOn(@, 'warn')
-        spyOn(@, 'error')
-        @
-
-      @log = @createSpyLogger()
-      $log.setLog @log
-    ]
+    inject (nemSimpleLogger) =>
+      @subject = nemSimpleLogger
 
   describe 'default', ->
-    it 'error logging works', ->
+    it 'error', ->
       @subject.error('blah')
       expect(@log.error).toHaveBeenCalled()
 
@@ -36,6 +40,28 @@ describe 'nemLogging.nemSimpleLogger', ->
     it 'warn', ->
       @subject.warn('blah')
       expect(@log.warn).not.toHaveBeenCalled()
+
+  describe 'all on', ->
+    beforeEach ->
+      inject (nemSimpleLogger) =>
+        nemSimpleLogger.currentLevel = nemSimpleLogger.LEVELS.log
+        @subject = nemSimpleLogger
+
+    it 'error', ->
+      @subject.error('blah')
+      expect(@log.error).toHaveBeenCalled()
+
+    it 'debug', ->
+      @subject.debug('blah')
+      expect(@log.debug).toHaveBeenCalled()
+
+    it 'info', ->
+      @subject.info('blah')
+      expect(@log.info).toHaveBeenCalled()
+
+    it 'warn', ->
+      @subject.warn('blah')
+      expect(@log.warn).toHaveBeenCalled()
 
   describe 'spawn', ->
     beforeEach ->
@@ -52,7 +78,32 @@ describe 'nemLogging.nemSimpleLogger', ->
         expect(@newLogger.currentLevel != @subject.currentLevel).toBeTruthy()
         @newLogger.debug('blah')
         expect(@log.debug).toHaveBeenCalled()
-        @newLogger.setLog(@newLog)
         @newLogger.debug('blah')
         @subject.debug('blah')
         expect(@newLog.debug).toHaveBeenCalled()
+
+  describe 'decorate', ->
+    beforeEach ->
+      angular.module('nemLogging')
+      .config ($provide, nemSimpleLoggerProvider) ->
+        #decorate w/ nemSimpleLogger which will call spys internally
+        $provide.decorator nemSimpleLoggerProvider.decorator...
+
+      inject ($log) =>
+        @subject = $log
+
+    it 'error', ->
+      @subject.error('blah')
+      expect(@log.error).toHaveBeenCalled()
+
+    it 'debug', ->
+      @subject.debug('blah')
+      expect(@log.debug).toHaveBeenCalled()
+
+    it 'info', ->
+      @subject.info('blah')
+      expect(@log.info).toHaveBeenCalled()
+
+    it 'warn', ->
+      @subject.warn('blah')
+      expect(@log.warn).toHaveBeenCalled()

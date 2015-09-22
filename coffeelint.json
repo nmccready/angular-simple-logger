@@ -23,7 +23,7 @@
     "level": "error"
   },
   "no_throwing_strings": {
-    "level": "warn"
+    "level": "ignore"
   },
   "no_trailing_semicolons": {
     "level": "error"
