@@ -66,6 +66,30 @@ angular.module('someApp', ['nemLogging'])
 });
 ```
 
+### Override all of $log (optional decorator)
+
+Optionally (default is off) decorate $log to utilize log levels globally within the app.
+
+Note this logger's currentLevel is info!
+
+```js
+angular.module('someApp', ['nemLogging']))
+.config(function($provide, nemSimpleLoggerProvider) {
+  return $provide.decorator.apply(null, nemSimpleLoggerProvider.decorator);
+})
+.config(function($provide, nemSimpleLoggerProvider) {
+  var logger = $provide.decorator.apply(null, nemSimpleLoggerProvider.decorator);
+  //override level at config
+  logger.currentLevel = logger.LEVELS.error;
+  return logger;
+})
+.run(function($log){
+  //at run time
+  //override the default log level globally
+  $log.currentLevel = $log.LEVELS.error;
+});
+```
+
 ### API
 Underneath it all it is still calling `$log` so calling the logger for logging itself is the same.
 
