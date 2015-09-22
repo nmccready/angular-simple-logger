@@ -70,7 +70,7 @@ angular.module('someApp', ['nemLogging'])
 
 Optionally (default is off) decorate $log to utilize log levels globally within the app.
 
-Note this logger's currentLevel is info!
+Note this logger's currentLevel is log! Where the order is log, info, debug, warn, error.
 
 ```js
 angular.module('someApp', ['nemLogging']))
