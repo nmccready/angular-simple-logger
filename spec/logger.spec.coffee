@@ -136,6 +136,9 @@ describe 'nemLogging.nemSimpleLogger', ->
       expect(@newLogger.debug).toBeDefined()
       expect(@newLogger != @subject).toBeTruthy()
 
+    it 'underlying logger is still $log', ->
+      expect(@newLogger.$log == @loggger).toBeTruthy()
+
     describe 'Has Independent', ->
       it 'logLevels', ->
         @newLogger.currentLevel = @newLogger.LEVELS.debug
