@@ -1,14 +1,11 @@
 angular.module('nemLogging',[])
 .provider 'nemSimpleLogger', ->
 
-  _fns = ['log', 'info', 'debug', 'warn', 'error']
-
-  LEVELS =
-    log: 1
-    info: 2
-    debug: 3
-    warn: 4
-    error: 5
+  _fns = ['debug', 'info', 'warn', 'error', 'log']
+  LEVELS = {}
+  for key,val of _fns
+    LEVELS[val] = key
+  
 
   maybeExecLevel = (level, current, fn) ->
     fn() if level >= current
@@ -35,7 +32,7 @@ angular.module('nemLogging',[])
   @decorator = ['$log', ($delegate) ->
     #app domain logger enables all logging by default
     log = new Logger($delegate)
-    log.currentLevel = LEVELS.log
+    log.currentLevel = LEVELS.debug
     log
   ]
 

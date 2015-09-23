@@ -27,10 +27,6 @@ describe 'nemLogging.nemSimpleLogger', ->
       @subject = nemSimpleLogger
 
   describe 'default', ->
-    it 'error', ->
-      @subject.error('blah')
-      expect(@loggger.error).toHaveBeenCalled()
-
     it 'debug', ->
       @subject.debug('blah')
       expect(@loggger.debug).not.toHaveBeenCalled()
@@ -43,19 +39,20 @@ describe 'nemLogging.nemSimpleLogger', ->
       @subject.warn('blah')
       expect(@loggger.warn).not.toHaveBeenCalled()
 
+    it 'error', ->
+      @subject.error('blah')
+      expect(@loggger.error).toHaveBeenCalled()
+
     it 'log', ->
       @subject.log('blah')
-      expect(@loggger.log).not.toHaveBeenCalled()
+      expect(@loggger.log).toHaveBeenCalled()
+
 
   describe 'all on', ->
     beforeEach ->
       inject (nemSimpleLogger) =>
-        nemSimpleLogger.currentLevel = nemSimpleLogger.LEVELS.log
+        nemSimpleLogger.currentLevel = nemSimpleLogger.LEVELS.debug
         @subject = nemSimpleLogger
-
-    it 'error', ->
-      @subject.error('blah')
-      expect(@loggger.error).toHaveBeenCalled()
 
     it 'debug', ->
       @subject.debug('blah')
@@ -69,9 +66,66 @@ describe 'nemLogging.nemSimpleLogger', ->
       @subject.warn('blah')
       expect(@loggger.warn).toHaveBeenCalled()
 
+    it 'error', ->
+      @subject.error('blah')
+      expect(@loggger.error).toHaveBeenCalled()
+
     it 'log', ->
       @subject.log('blah')
       expect(@loggger.log).toHaveBeenCalled()
+
+  describe 'all off', ->
+    describe 'by LEVELS +1', ->
+      beforeEach ->
+        inject (nemSimpleLogger) =>
+          nemSimpleLogger.currentLevel = nemSimpleLogger.LEVELS.log + 1
+          @subject = nemSimpleLogger
+
+      it 'debug', ->
+        @subject.debug('blah')
+        expect(@loggger.debug).not.toHaveBeenCalled()
+
+      it 'info', ->
+        @subject.info('blah')
+        expect(@loggger.info).not.toHaveBeenCalled()
+
+      it 'warn', ->
+        @subject.warn('blah')
+        expect(@loggger.warn).not.toHaveBeenCalled()
+
+      it 'error', ->
+        @subject.error('blah')
+        expect(@loggger.error).not.toHaveBeenCalled()
+
+      it 'log', ->
+        @subject.log('blah')
+        expect(@loggger.log).not.toHaveBeenCalled()
+
+    describe 'by doLog', ->
+      beforeEach ->
+        inject (nemSimpleLogger) =>
+          nemSimpleLogger.doLog = false
+          @subject = nemSimpleLogger
+
+      it 'debug', ->
+        @subject.debug('blah')
+        expect(@loggger.debug).not.toHaveBeenCalled()
+
+      it 'info', ->
+        @subject.info('blah')
+        expect(@loggger.info).not.toHaveBeenCalled()
+
+      it 'warn', ->
+        @subject.warn('blah')
+        expect(@loggger.warn).not.toHaveBeenCalled()
+
+      it 'error', ->
+        @subject.error('blah')
+        expect(@loggger.error).not.toHaveBeenCalled()
+
+      it 'log', ->
+        @subject.log('blah')
+        expect(@loggger.log).not.toHaveBeenCalled()
 
   describe 'spawn', ->
     beforeEach ->

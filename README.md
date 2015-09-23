@@ -70,7 +70,7 @@ angular.module('someApp', ['nemLogging'])
 
 Optionally (default is off) decorate $log to utilize log levels globally within the app.
 
-Note this logger's currentLevel is log! Where the order is log, info, debug, warn, error.
+Note this logger's currentLevel is debug! Where the order is debug, info, warn, error, log.
 
 ```js
 angular.module('someApp', ['nemLogging']))
@@ -93,8 +93,8 @@ angular.module('someApp', ['nemLogging']))
 ### API
 Underneath it all it is still calling `$log` so calling the logger for logging itself is the same.
 
-- LEVELS: available are `log, info, debug, warn, error`
+- LEVELS: available are `debug, info, warn, error, log`
 
 - doLog (boolean) - deaults to true. If set to false all logging for that logger instance is disabled.
 
-- currentLevel (number) - defaults to `error: 5` corresponds to the current log level provided by `LEVELS`.
+- currentLevel (number) - defaults to `error: 4` corresponds to the current log level provided by `LEVELS`.

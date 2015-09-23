@@ -1,22 +1,20 @@
 /**
  *  angular-simple-logger
  *
- * @version: 0.0.4
+ * @version: 0.1.0
  * @author: Nicholas McCready
- * @date: Tue Sep 22 2015 17:18:25 GMT-0400 (EDT)
+ * @date: Wed Sep 23 2015 10:21:02 GMT-0400 (EDT)
  * @license: MIT
  */var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 angular.module('nemLogging', []).provider('nemSimpleLogger', function() {
-  var LEVELS, Logger, _fns, maybeExecLevel;
-  _fns = ['log', 'info', 'debug', 'warn', 'error'];
-  LEVELS = {
-    log: 1,
-    info: 2,
-    debug: 3,
-    warn: 4,
-    error: 5
-  };
+  var LEVELS, Logger, _fns, key, maybeExecLevel, val;
+  _fns = ['debug', 'info', 'warn', 'error', 'log'];
+  LEVELS = {};
+  for (key in _fns) {
+    val = _fns[key];
+    LEVELS[val] = key;
+  }
   maybeExecLevel = function(level, current, fn) {
     if (level >= current) {
       return fn();
@@ -63,7 +61,7 @@ angular.module('nemLogging', []).provider('nemSimpleLogger', function() {
     '$log', function($delegate) {
       var log;
       log = new Logger($delegate);
-      log.currentLevel = LEVELS.log;
+      log.currentLevel = LEVELS.debug;
       return log;
     }
   ];
