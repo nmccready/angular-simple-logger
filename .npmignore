@@ -1,3 +1,5 @@
+.*
+spec/
 *.json
 .gitignore
 travis.yml

@@ -21,9 +21,12 @@
     "angular": "1.4.X"
   },
   "ignore": [
+    ".*",
+    "spec",
+    "*.coffee",
     "*.json",
     ".gitignore",
-    "travis.yml",
+    ".travis.yml",
     "*.html",
     "package.js",
     "*.md",
