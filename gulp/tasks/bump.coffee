@@ -2,7 +2,7 @@ gulp = require 'gulp'
 bump = require 'gulp-bump'
 git = require 'gulp-git'
 {log} = require 'gulp-util'
-
+require './dist.coffee'
 
 bumpThis = (semverLevel, doCommit = true, dryRun = false, files = ['bower.json', 'package.json']) ->
   stream = gulp.src files
@@ -27,14 +27,14 @@ bumpThis = (semverLevel, doCommit = true, dryRun = false, files = ['bower.json',
 ['', 'minor', 'major'].forEach (name) ->
   taskName = if name then '-' + name else ''
 
-  gulp.task "bump-@#{taskName}", gulp.series 'default', ->
+  gulp.task "bump-@#{taskName}", gulp.series 'distAll', ->
     bumpThis(name)
 
-  gulp.task "bump-@#{taskName}-dry", gulp.series 'default', ->
+  gulp.task "bump-@#{taskName}-dry", gulp.series 'distAll', ->
     bumpThis(name, true, true)
 
-  gulp.task "bump-@#{taskName}-no-commit", gulp.series 'default', ->
+  gulp.task "bump-@#{taskName}-no-commit", gulp.series 'distAll', ->
     bumpThis(name,false)
 
-  gulp.task "bump-@#{taskName}-no-commit-dry", gulp.series 'default', ->
+  gulp.task "bump-@#{taskName}-no-commit-dry", gulp.series 'distAll', ->
     bumpThis(name,false, true)
