@@ -136,6 +136,36 @@ describe 'nemLogging.nemSimpleLogger', ->
       expect(@newLogger.debug).toBeDefined()
       expect(@newLogger != @subject).toBeTruthy()
 
+    it 'underlying logger is still $log', ->
+      expect(@newLogger.$log == @loggger).toBeTruthy()
+
+    describe 'throws', ->
+
+      it 'bad logger', ->
+        expect( => @subject.spawn({})).toThrow('@$log is invalid')
+
+      it 'partial logger', ->
+        expect( =>
+          @subject.spawn
+            log: ->
+            debug: ->
+            error: ->
+        ).toThrow('@$log is invalid')
+
+      it 'partial logger', ->
+        expect( =>
+          @subject.spawn
+            log: ->
+            debug: ->
+            error: ->
+        ).toThrow('@$log is invalid')
+
+      it 'undefined decorated logger', ->
+        expect =>
+          @subject.$log = undefined
+          @subject.spawn()
+        .toThrow('internalLogger undefined')
+
     describe 'Has Independent', ->
       it 'logLevels', ->
         @newLogger.currentLevel = @newLogger.LEVELS.debug

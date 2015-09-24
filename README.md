@@ -90,6 +90,38 @@ angular.module('someApp', ['nemLogging']))
 });
 ```
 
+### Optional Debug Levels via [debug](https://github.com/visionmedia/debug)
+
+If you choose to use the [full version of this library](./dist/angular-simple-logger.js) and no the [light](./dist/angular-simple-logger.light.js).
+
+You can add finer grain debug levels via the [visionmedia/debug API](https://github.com/visionmedia/debug).
+
+To use:
+
+```js
+angular.module('someApp', ['nemLogging']))
+//as a provider
+.config(function(nemDebugProvider) {
+  var debug = nemDebugProvider.debug;
+  debug.enable("worker:*");
+})
+.service('LoggerLevelA', function(nemSimpleLogger) {
+  //will have debug, info, warn, error, and log at disposal as before, but now debug is using the visionmedia/debug fn
+  return nemSimpleLogger.spawn("worker:a");
+})
+.service('LoggerLevelB', function(nemSimpleLogger) {
+  return nemSimpleLogger.spawn("worker:b");
+})
+//heck maybe you don't want all of the logger interface only want debug.. then
+.service('JustDebugC',function(nemDebug) {
+  return nemDebug("worker:c");
+})
+.run(function(nemDebug){
+  //enable another debug level
+  nemDebug.enable("coolStuff:*");
+});
+```
+
 ### API
 Underneath it all it is still calling `$log` so calling the logger for logging itself is the same.
 
@@ -98,3 +130,5 @@ Underneath it all it is still calling `$log` so calling the logger for logging i
 - doLog (boolean) - deaults to true. If set to false all logging for that logger instance is disabled.
 
 - currentLevel (number) - defaults to `error: 4` corresponds to the current log level provided by `LEVELS`.
+
+- spawn - create a independent logger accepts a logger or a string (see visionmedia debug notes above). Defaults to $log

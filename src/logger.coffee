@@ -1,24 +1,45 @@
-angular.module('nemLogging',[])
-.provider 'nemSimpleLogger', ->
+angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (nemDebugProvider) ->
+
+  nemDebug = nemDebugProvider.debug
 
   _fns = ['debug', 'info', 'warn', 'error', 'log']
   LEVELS = {}
   for key,val of _fns
     LEVELS[val] = key
-  
 
-  maybeExecLevel = (level, current, fn) ->
+
+  _maybeExecLevel = (level, current, fn) ->
     fn() if level >= current
+
+  _isValidLogObject = (logObject) ->
+    isValid = false
+    return  isValid unless logObject
+    for key, val of _fns
+      isValid = logObject[val]? and typeof logObject[val] is 'function'
+      break unless isValid
+    isValid
+
+  ###
+    Overide logeObject.debug with a nemDebug instance
+    see: https://github.com/visionmedia/debug/blob/master/Readme.md
+  ###
+  _wrapDebug = (debugStrLevel, logObject) ->
+    debugInstance = nemDebug(debugStrLevel)
+    newLogger = {}
+    for key, val of _fns
+      newLogger[val] = if val == 'debug' then debugInstance else logObject[val]
+    newLogger
 
   class Logger
     constructor: (@$log) ->
       throw 'internalLogger undefined' unless @$log
+      throw '@$log is invalid' unless _isValidLogObject @$log
       @doLog = true
       logFns = {}
       _fns.forEach (level) =>
         logFns[level] = (msg) =>
           if @doLog
-            maybeExecLevel LEVELS[level], @currentLevel, =>
+            _maybeExecLevel LEVELS[level], @currentLevel, =>
               @$log[level](msg)
 
       @LEVELS = LEVELS
@@ -27,6 +48,12 @@ angular.module('nemLogging',[])
         @[fnName] = logFns[fnName]
 
     spawn: (newInternalLogger) =>
+      if typeof newInternalLogger is 'string'
+        throw '@$log is invalid' unless _isValidLogObject @$log
+        unless nemDebug
+          throw 'nemDebug is undefined this is probably the light version of this library sep debug logggers is not supported!'
+        return _wrapDebug newInternalLogger, @$log
+
       new Logger(newInternalLogger or @$log)
 
   @decorator = ['$log', ($delegate) ->
@@ -42,3 +69,4 @@ angular.module('nemLogging',[])
     new Logger($log)
   ]
   @
+]

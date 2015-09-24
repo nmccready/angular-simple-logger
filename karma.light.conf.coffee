@@ -1,4 +1,5 @@
-
+#I didnt want this in two spots, but im tired. Karma programatically only accepts files.
+#so it would be nice to have a karma conf gen to /tmp
 module.exports = (config) ->
   config.set
   # base path that will be used to resolve all patterns (eg. files, exclude)
@@ -11,22 +12,22 @@ module.exports = (config) ->
   # preprocess matching files before serving them to the browser
   # available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'spec/**/*.coffee': ['coffee']
-      'dist/index.js': ['coverage']
+      'spec/logger.spec.coffee': ['coffee']
+      'dist/index.light.js': ['coverage']
     }
 
     coverageReporter:
       reporters:[
-        { type : 'html', dir : 'dist/coverage/', subdir: 'lib' }
-        { type : 'cobertura', dir : 'dist/coverage/', subdir: 'lib' }
+        { type : 'html', dir : 'dist/coverage/', subdir: 'libLight' }
+        { type : 'cobertura', dir : 'dist/coverage/', subdir: 'libLight' }
       ]
 
   # list of files / patterns to load in the browser
     files: [
       'node_modules/angular/angular.js'
       'node_modules/angular-mocks/angular-mocks.js'
-      'dist/index.js'
-      'spec/**/*.spec.coffee'
+      'dist/index.light.js'
+      'spec/logger.spec.coffee'
       #do not include those specs for jasmine html runner by karma kama_jasmine_runner.html
       {pattern:'*coffee', included: false}
     ]
