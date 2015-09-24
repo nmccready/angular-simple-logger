@@ -7,12 +7,16 @@ concat = require 'gulp-concat'
 wrap = require 'gulp-wrap'
 replace = require 'gulp-replace'
 uglify = require 'gulp-uglify'
-ourPackage = require '../../package.json'
 date = new Date()
 insert = require 'gulp-insert'
 require './clean.coffee'
+jf = require 'jsonfile'
 
-header =
+pkgFn = ->
+  jf.readFileSync 'package.json' #always get latest!
+
+header = ->
+  ourPackage = pkgFn()
   """
   /**
    *  #{ourPackage.name}
@@ -34,7 +38,7 @@ wrapDist = (source = 'dist/index.js', maybeLight = '') ->
   gulp.src source
   .pipe wrap src: 'src/wrap/dist.js'
   # .pipe replace(/;(?=[^;]*;[^;]*$)/, '') #remove bade semicolon
-  .pipe insert.prepend(header)
+  .pipe insert.prepend(header())
   .pipe concat "index.#{maybeLight}js"
   .pipe gulp.dest 'dist'
   .pipe concat "angular-simple-logger.#{maybeLight}js"
