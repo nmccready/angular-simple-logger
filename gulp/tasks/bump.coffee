@@ -27,14 +27,14 @@ bumpThis = (semverLevel, doCommit = true, dryRun = false, files = ['bower.json',
 ['', 'minor', 'major'].forEach (name) ->
   taskName = if name then '-' + name else ''
 
-  gulp.task "bump-@#{taskName}", ->
+  gulp.task "bump-@#{taskName}", gulp.series 'default', ->
     bumpThis(name)
 
-  gulp.task "bump-@#{taskName}-dry", ->
+  gulp.task "bump-@#{taskName}-dry", gulp.series 'default', ->
     bumpThis(name, true, true)
 
-  gulp.task "bump-@#{taskName}-no-commit", ->
+  gulp.task "bump-@#{taskName}-no-commit", gulp.series 'default', ->
     bumpThis(name,false)
 
-  gulp.task "bump-@#{taskName}-no-commit-dry", ->
+  gulp.task "bump-@#{taskName}-no-commit-dry", gulp.series 'default', ->
     bumpThis(name,false, true)
