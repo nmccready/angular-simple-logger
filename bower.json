@@ -19,5 +19,19 @@
   },
   "resolutions": {
     "angular": "1.4.X"
-  }
+  },
+  "ignore": [
+    "*.json",
+    ".gitignore",
+    "travis.yml",
+    "*.html",
+    "package.js",
+    "*.md",
+    "src",
+    "gulp",
+    "scripts",
+    "node_modules",
+    "bower_components",
+    "tmp"
+  ]
 }

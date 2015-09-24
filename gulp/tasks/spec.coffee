@@ -23,3 +23,13 @@ gulp.task 'karmaLight', (done) ->
   karmaRunner(done, require.resolve('../../karma.light.conf.coffee'))
 
 gulp.task 'spec', gulp.parallel 'karma', 'karmaLight'
+
+doOpen = (name = '') ->
+  ->
+    gulp.src('')
+    .pipe open
+      uri: "dist/coverage/lib#{name}/index.html"
+      app: 'Google Chrome' #osx , linux: google-chrome, windows: chrome
+
+
+gulp.task 'coverage', gulp.parallel doOpen(), doOpen('Light')

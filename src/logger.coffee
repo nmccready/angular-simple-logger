@@ -33,6 +33,7 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
   class Logger
     constructor: (@$log) ->
       throw 'internalLogger undefined' unless @$log
+      throw '@$log is invalid' unless _isValidLogObject @$log
       @doLog = true
       logFns = {}
       _fns.forEach (level) =>
@@ -48,8 +49,7 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
 
     spawn: (newInternalLogger) =>
       if typeof newInternalLogger is 'string'
-        unless _isValidLogObject @$log
-          throw '@$log is invalid'
+        throw '@$log is invalid' unless _isValidLogObject @$log
         unless nemDebug
           throw 'nemDebug is undefined this is probably the light version of this library sep debug logggers is not supported!'
         return _wrapDebug newInternalLogger, @$log

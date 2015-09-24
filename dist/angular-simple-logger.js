@@ -3,7 +3,7 @@
  *
  * @version: 0.1.0
  * @author: Nicholas McCready
- * @date: Wed Sep 23 2015 22:48:51 GMT-0400 (EDT)
+ * @date: Thu Sep 24 2015 00:28:20 GMT-0400 (EDT)
  * @license: MIT
  */
 (function (window, angular){
@@ -594,6 +594,9 @@ angular.module('nemLogging').provider('nemSimpleLogger', [
         this.spawn = bind(this.spawn, this);
         if (!this.$log) {
           throw 'internalLogger undefined';
+        }
+        if (!_isValidLogObject(this.$log)) {
+          throw '@$log is invalid';
         }
         this.doLog = true;
         logFns = {};
