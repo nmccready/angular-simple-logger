@@ -114,7 +114,7 @@ angular.module('someApp', ['nemLogging']))
 })
 //heck maybe you don't want all of the logger interface only want debug.. then
 .service('JustDebugC',function(nemDebug) {
-  return debug("worker:c");
+  return nemDebug("worker:c");
 })
 .run(function(nemDebug){
   //enable another debug level
