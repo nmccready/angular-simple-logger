@@ -19,10 +19,14 @@ karmaRunner = (done, karmaConf = require.resolve('../../karma.conf.coffee')) ->
 gulp.task 'karma', (done) ->
   karmaRunner(done)
 
+gulp.task 'karmaBrowserify', (done) ->
+  karmaRunner(done, require.resolve('../../karma.browserify.conf.coffee'))
+
+
 gulp.task 'karmaLight', (done) ->
   karmaRunner(done, require.resolve('../../karma.light.conf.coffee'))
 
-gulp.task 'spec', gulp.parallel 'karma', 'karmaLight'
+gulp.task 'spec', gulp.parallel 'karma', 'karmaLight', 'karmaBrowserify'
 
 doOpen = (name = '') ->
   ->

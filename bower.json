@@ -14,8 +14,7 @@
     "angular": "^1.2"
   },
   "devDependencies": {
-    "angular-mocks": "^1.2",
-    "visionmedia-debug": "~2.2.0"
+    "angular-mocks": "^1.2"
   },
   "resolutions": {
     "angular": "1.4.X"

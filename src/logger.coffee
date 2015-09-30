@@ -37,15 +37,14 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
       @doLog = true
       logFns = {}
       _fns.forEach (level) =>
-        logFns[level] = (msg) =>
+        logFns[level] = (msg) => #need forEach for new scope of this closure
           if @doLog
             _maybeExecLevel LEVELS[level], @currentLevel, =>
               @$log[level](msg)
+        @[level] = logFns[level]
 
       @LEVELS = LEVELS
       @currentLevel = LEVELS.error
-      _fns.forEach (fnName) =>
-        @[fnName] = logFns[fnName]
 
     spawn: (newInternalLogger) =>
       if typeof newInternalLogger is 'string'
