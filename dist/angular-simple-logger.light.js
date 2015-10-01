@@ -3,15 +3,16 @@
  *
  * @version: 0.1.3
  * @author: Nicholas McCready
- * @date: Thu Sep 24 2015 15:01:56 GMT-0400 (EDT)
+ * @date: Wed Sep 30 2015 12:25:34 GMT-0400 (EDT)
  * @license: MIT
  */
+
 (function (window, angular){
   angular.module('nemLogging', []);
 
 angular.module('nemLogging').provider('nemDebug', function (){
   var ourDebug = null;
-
+  
   this.$get =  function(){
     //avail as service
     return ourDebug;
@@ -22,7 +23,6 @@ angular.module('nemLogging').provider('nemDebug', function (){
 
   return this;
 });
-
 var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 angular.module('nemLogging').provider('nemSimpleLogger', [
@@ -85,22 +85,18 @@ angular.module('nemLogging').provider('nemSimpleLogger', [
         logFns = {};
         _fns.forEach((function(_this) {
           return function(level) {
-            return logFns[level] = function(msg) {
+            logFns[level] = function(msg) {
               if (_this.doLog) {
                 return _maybeExecLevel(LEVELS[level], _this.currentLevel, function() {
                   return _this.$log[level](msg);
                 });
               }
             };
+            return _this[level] = logFns[level];
           };
         })(this));
         this.LEVELS = LEVELS;
         this.currentLevel = LEVELS.error;
-        _fns.forEach((function(_this) {
-          return function(fnName) {
-            return _this[fnName] = logFns[fnName];
-          };
-        })(this));
       }
 
       Logger.prototype.spawn = function(newInternalLogger) {

@@ -4,7 +4,8 @@ coffeelint = require 'gulp-coffeelint'
 coffee = require 'gulp-coffee'
 concat = require 'gulp-concat'
 {log} = require 'gulp-util'
-require './wrap.coffee'
+insert = require 'gulp-insert'
+{header} = require './wrap.coffee'
 
 build = (source, out = 'index.js') ->
   gulp.src source
@@ -15,7 +16,14 @@ build = (source, out = 'index.js') ->
   .pipe gulp.dest 'dist'
 
 gulp.task 'build', gulp.series 'wrapDebug', ->
-  build [ 'src/module.coffee', 'tmp/debug.js', 'src/*.coffee']
+  build [ 'src/module.coffee', 'tmp/debugCommonJS.js', 'src/*.coffee'], 'browser.js'
 
-gulp.task 'buildLight', gulp.series 'wrapDebug', ->
-  build [ 'src/module.coffee', 'src/debug.light.js', 'src/*.coffee'], 'index.light.js'
+gulp.task 'buildCommonJS', gulp.series 'wrapDebug', ->
+  build [ 'src/module.coffee', 'tmp/debugCommonJS.js', 'src/*.coffee']
+  .pipe insert.prepend("var angular = require('angular');\n\n")
+  .pipe insert.prepend(header())
+  .pipe concat 'index.js'
+  .pipe gulp.dest 'dist'
+
+gulp.task 'buildLight', gulp.series 'wrapDebugLight', ->
+  build [ 'src/module.coffee', 'tmp/debugLight.js', 'src/*.coffee'], 'index.light.js'
