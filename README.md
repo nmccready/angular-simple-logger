@@ -8,6 +8,27 @@ angular-simple-logger (nemLogging.nemSimpleLogger)
 ### Purpose:
 To have simplified log levels where a supporting angular module's log levels are independent of the application.
 
+### Dependencies: (What can make what was simple/complicated (kinda))
+
+All in dist:
+
+- angular-simple-logger.js :
+  
+   - intention browser version identical to browser.js to be used via bower without Webpack or Browserify. It is prepacked (all dependencies included). There fore it will break any commonJS compiler.
+
+- index.js (CommonJS version) Do use npm, with browserify, and webpack **CANNOT** use via bower
+
+- *.light.js - any, will/should work with Browser, Brower and npm (with some love, but why?)
+
+Why is it this way? Well visonmedia debug is complicated. See [here](https://github.com/tombatossals/angular-leaflet-directive/issues/997) . I am open to a better way so please work with me, not against me.
+
+**Bottom line**: Here is what I recommend. If your using bower with a project that depends on this; bundle your vendor files seperatley via gulp, and main bowerfiles. Browserify, and Webpack can work with both bower and npm at the same time so it is up to you to make your whole app play nice (ie you can ignore stuff and not call require).
+
+Also you can override which version (say point to*.light.js) for webpack and or browserify to use/target against. 
+
+If your lucky and all of your projects are in npm then you can eliminate bower and not worry about this.
+
+In the end there are plenty of workarounds using the tools explained above.
 
 ### Basic use:
 
