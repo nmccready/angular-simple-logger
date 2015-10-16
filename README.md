@@ -10,13 +10,11 @@ To have simplified log levels where a supporting angular module's log levels are
 
 ### Dependencies: (What can make what was simple/complicated (kinda))
 
-All in dist:
+How to decide which file from `/dist` to include in your project:
 
-- angular-simple-logger.js :
-  
-   - intention browser version identical to browser.js to be used via bower without Webpack or Browserify. It is prepacked (all dependencies included). There fore it will break any commonJS compiler.
+- If using `bower`, include `dist/angular-simple-logger.js`. This is a drop-in replacement for `browser.js`. It is prepacked (all dependencies included). Do NOT use with Browserify or Webpack since it will break any commonJS compiler.
 
-- index.js (CommonJS version) Do use npm, with browserify, and webpack **CANNOT** use via bower
+- If using `npm` with Browserify or Webpack, include `dist/index.js` (CommonJS version). Do NOT use with bower.
 
 - *.light.js - any, will/should work with Browser, Brower and npm (with some love, but why?)
 
