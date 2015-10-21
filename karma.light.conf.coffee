@@ -13,6 +13,7 @@ module.exports = (config) ->
   # available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'spec/logger.spec.coffee': ['coffee']
+      'spec/logger.ArrayExt.spec.coffee': ['coffee']
       'dist/index.light.js': ['coverage']
     }
 
@@ -28,6 +29,7 @@ module.exports = (config) ->
       'node_modules/angular-mocks/angular-mocks.js'
       'dist/index.light.js'
       'spec/logger.spec.coffee'
+      'spec/logger.ArrayExt.spec.coffee'
       #do not include those specs for jasmine html runner by karma kama_jasmine_runner.html
       {pattern:'*coffee', included: false}
     ]

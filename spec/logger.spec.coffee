@@ -26,6 +26,9 @@ describe 'nemLogging.nemSimpleLogger', ->
     inject (nemSimpleLogger) =>
       @subject = nemSimpleLogger
 
+  it 'exists', ->
+    expect(@subject).toBeDefined()
+
   describe 'default', ->
     it 'debug', ->
       @subject.debug('blah')

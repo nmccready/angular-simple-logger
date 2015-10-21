@@ -4,9 +4,8 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
 
   _fns = ['debug', 'info', 'warn', 'error', 'log']
   LEVELS = {}
-  for key,val of _fns
+  for val, key in _fns
     LEVELS[val] = key
-
 
   _maybeExecLevel = (level, current, fn) ->
     fn() if level >= current
@@ -14,7 +13,7 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
   _isValidLogObject = (logObject) ->
     isValid = false
     return  isValid unless logObject
-    for key, val of _fns
+    for val in _fns
       isValid = logObject[val]? and typeof logObject[val] is 'function'
       break unless isValid
     isValid
@@ -26,7 +25,7 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
   _wrapDebug = (debugStrLevel, logObject) ->
     debugInstance = nemDebug(debugStrLevel)
     newLogger = {}
-    for key, val of _fns
+    for val in _fns
       newLogger[val] = if val == 'debug' then debugInstance else logObject[val]
     newLogger
 
@@ -36,12 +35,14 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
       throw '@$log is invalid' unless _isValidLogObject @$log
       @doLog = true
       logFns = {}
-      _fns.forEach (level) =>
-        logFns[level] = (msg) => #need forEach for new scope of this closure
-          if @doLog
-            _maybeExecLevel LEVELS[level], @currentLevel, =>
-              @$log[level](msg)
-        @[level] = logFns[level]
+
+      for level in _fns
+        do (level) =>
+          logFns[level] = (msg) =>
+            if @doLog
+              _maybeExecLevel LEVELS[level], @currentLevel, =>
+                @$log[level](msg)
+          @[level] = logFns[level]
 
       @LEVELS = LEVELS
       @currentLevel = LEVELS.error
