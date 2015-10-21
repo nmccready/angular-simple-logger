@@ -1,9 +1,9 @@
 /**
  *  angular-simple-logger
  *
- * @version: 0.1.4
+ * @version: 0.1.5
  * @author: Nicholas McCready
- * @date: Wed Oct 21 2015 12:43:40 GMT-0400 (EDT)
+ * @date: Wed Oct 21 2015 12:47:46 GMT-0400 (EDT)
  * @license: MIT
  */
 
