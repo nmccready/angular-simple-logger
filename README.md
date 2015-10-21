@@ -1,5 +1,7 @@
 angular-simple-logger (nemLogging.nemSimpleLogger)
 ==============
+
+[![Join the chat at https://gitter.im/nmccready/angular-simple-logger](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/nmccready/angular-simple-logger?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Dependencies](https://david-dm.org/nmccready/angular-simple-logger.png)](https://david-dm.org/nmccready/angular-simple-logger)&nbsp;
 [![Dependencies](https://david-dm.org/nmccready/angular-simple-logger.png)](https://david-dm.org/nmccready/angular-simple-logger)&nbsp;
 [![Build Status](https://travis-ci.org/nmccready/angular-simple-logger.png?branch=master)](https://travis-ci.org/nmccready/angular-simple-logger)
