@@ -18,12 +18,17 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
       break unless isValid
     isValid
 
+_debugCache = {}
+
   ###
     Overide logeObject.debug with a nemDebug instance
     see: https://github.com/visionmedia/debug/blob/master/Readme.md
   ###
   _wrapDebug = (debugStrLevel, logObject) ->
-    debugInstance = nemDebug(debugStrLevel)
+    # need to cache debugInstance in order to get consistent color; this could be considered a bug in the debug module
+    if !_debugCache[namespace]?
+      _debugCache[namespace] = nemDebug(debugStrLevel)
+    debugInstance = _debugCache[namespace]
     newLogger = {}
     for val in _fns
       newLogger[val] = if val == 'debug' then debugInstance else logObject[val]
