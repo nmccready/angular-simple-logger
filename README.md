@@ -6,6 +6,7 @@ angular-simple-logger (nemLogging.nemSimpleLogger)
 [![Dependencies](https://david-dm.org/nmccready/angular-simple-logger.png)](https://david-dm.org/nmccready/angular-simple-logger)&nbsp;
 [![Build Status](https://travis-ci.org/nmccready/angular-simple-logger.png?branch=master)](https://travis-ci.org/nmccready/angular-simple-logger)
 
+### TLDR, [Example](http://nmccready.github.io/angular-simple-logger/example/)
 
 ### Purpose:
 To have simplified log levels where a supporting angular module's log levels are independent of the application.
