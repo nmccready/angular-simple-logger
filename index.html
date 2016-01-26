@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Angular-simple-logger by nmccready</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Angular-simple-logger</h1>
+      <h2 class="project-tagline">Basic log level logging with independent loggers.</h2>
+      <a href="https://github.com/nmccready/angular-simple-logger" class="btn">View on GitHub</a>
+      <a href="https://github.com/nmccready/angular-simple-logger/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/nmccready/angular-simple-logger/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="angular-simple-logger-nemloggingnemsimplelogger" class="anchor" href="#angular-simple-logger-nemloggingnemsimplelogger" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>angular-simple-logger (nemLogging.nemSimpleLogger)</h1>
+
+<p><a href="https://gitter.im/nmccready/angular-simple-logger?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/nmccready/angular-simple-logger"></a>
+<a href="https://david-dm.org/nmccready/angular-simple-logger"><img src="https://david-dm.org/nmccready/angular-simple-logger.png" alt="Dependencies"></a> 
+<a href="https://david-dm.org/nmccready/angular-simple-logger"><img src="https://david-dm.org/nmccready/angular-simple-logger.png" alt="Dependencies"></a> 
+<a href="https://travis-ci.org/nmccready/angular-simple-logger"><img src="https://travis-ci.org/nmccready/angular-simple-logger.png?branch=master" alt="Build Status"></a></p>
+
+<h3>
+<a id="purpose" class="anchor" href="#purpose" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Purpose:</h3>
+
+<p>To have simplified log levels where a supporting angular module's log levels are independent of the application.</p>
+
+<h3>
+<a id="dependencies-what-can-make-what-was-simplecomplicated-kinda" class="anchor" href="#dependencies-what-can-make-what-was-simplecomplicated-kinda" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Dependencies: (What can make what was simple/complicated (kinda))</h3>
+
+<p>How to decide which file from <code>/dist</code> to include in your project:</p>
+
+<ul>
+<li><p>If using <code>bower</code>, include <code>dist/angular-simple-logger.js</code>. This is a drop-in replacement for <code>browser.js</code>. It is prepacked (all dependencies included). Do NOT use with Browserify or Webpack since it will break any commonJS compiler.</p></li>
+<li><p>If using <code>npm</code> with Browserify or Webpack, include <code>dist/index.js</code> (CommonJS version). Do NOT use with bower.</p></li>
+<li><p>*.light.js - any, will/should work with Browser, Brower and npm (with some love, but why?)</p></li>
+</ul>
+
+<p>Why is it this way? Well visonmedia debug is complicated. See <a href="https://github.com/tombatossals/angular-leaflet-directive/issues/997">here</a> . I am open to a better way so please work with me, not against me.</p>
+
+<p><strong>Bottom line</strong>: Here is what I recommend. If your using bower with a project that depends on this; bundle your vendor files seperatley via gulp, and main bowerfiles. Browserify, and Webpack can work with both bower and npm at the same time so it is up to you to make your whole app play nice (ie you can ignore stuff and not call require).</p>
+
+<p>Also you can override which version (say point to*.light.js) for webpack and or browserify to use/target against. </p>
+
+<p>If your lucky and all of your projects are in npm then you can eliminate bower and not worry about this.</p>
+
+<p>In the end there are plenty of workarounds using the tools explained above.</p>
+
+<h3>
+<a id="basic-use" class="anchor" href="#basic-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Basic use:</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">angular</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>someApp<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>nemLogging<span class="pl-pds">'</span></span>])
+<span class="pl-c">//note this can be any type of injectable angular dependency (factory, service.. etc)</span>
+.<span class="pl-en">controller</span>(<span class="pl-s"><span class="pl-pds">"</span>someController<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>, <span class="pl-smi">nemSimpleLogger</span>) {
+  <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-smi">doLog</span> <span class="pl-k">=</span> <span class="pl-c1">true</span>; <span class="pl-c">//default is true</span>
+  <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-smi">currentLevel</span> <span class="pl-k">=</span> <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-c1">LEVELS</span>.<span class="pl-smi">debug</span>;<span class="pl-c">//defaults to error only</span>
+});  </pre></div>
+
+<h3>
+<a id="create-a-custom-independent-loggers" class="anchor" href="#create-a-custom-independent-loggers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a Custom Independent Loggers</h3>
+
+<p><em>(maybe 3 for one lib)</em></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">angular</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>someApp<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>nemLogging<span class="pl-pds">'</span></span>])
+<span class="pl-c">//note this can be any type of injectable angular dependency (factory, service.. etc)</span>
+.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">"</span>apiLogger<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>, <span class="pl-smi">nemSimpleLogger</span>) {
+  <span class="pl-k">var</span> logger <span class="pl-k">=</span> <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-en">spawn</span>();
+  <span class="pl-smi">logger</span>.<span class="pl-smi">currentLevel</span> <span class="pl-k">=</span> <span class="pl-smi">logger</span>.<span class="pl-c1">LEVELS</span>.<span class="pl-smi">warn</span>;
+  <span class="pl-k">return</span> logger;
+})
+.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">"</span>businessLogicLogger<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>, <span class="pl-smi">nemSimpleLogger</span>) {
+  <span class="pl-k">var</span> logger <span class="pl-k">=</span> <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-en">spawn</span>();
+  <span class="pl-smi">logger</span>.<span class="pl-smi">currentLevel</span> <span class="pl-k">=</span> <span class="pl-smi">logger</span>.<span class="pl-c1">LEVELS</span>.<span class="pl-smi">error</span>;
+  <span class="pl-k">return</span> logger;
+})
+.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">"</span>terseLogger<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>, <span class="pl-smi">nemSimpleLogger</span>) {
+  <span class="pl-k">var</span> logger <span class="pl-k">=</span> <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-en">spawn</span>();
+  <span class="pl-smi">logger</span>.<span class="pl-smi">currentLevel</span> <span class="pl-k">=</span> <span class="pl-smi">logger</span>.<span class="pl-c1">LEVELS</span>.<span class="pl-smi">info</span>;
+  <span class="pl-k">return</span> logger;
+});</pre></div>
+
+<h3>
+<a id="use-your-new-creations" class="anchor" href="#use-your-new-creations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Use your new creations!</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">angular</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>someApp<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>nemLogging<span class="pl-pds">'</span></span>])
+<span class="pl-c">//note this can be any type of injectable angular dependency (factory, service.. etc)</span>
+.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">"</span>booksApi<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">apiLogger</span>, <span class="pl-smi">$http</span>) {
+  <span class="pl-c">//do something with your books</span>
+  <span class="pl-smi">$http</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">"</span>/ap/books<span class="pl-pds">"</span></span>).<span class="pl-en">then</span>(<span class="pl-k">function</span>(<span class="pl-smi">data</span>){
+    <span class="pl-smi">apiLogger</span>.<span class="pl-c1">debug</span>(<span class="pl-s"><span class="pl-pds">"</span>books have come yay!<span class="pl-pds">"</span></span>);
+  });
+})
+.<span class="pl-en">controller</span>(<span class="pl-s"><span class="pl-pds">"</span>businessCtrl<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$scope</span>, <span class="pl-smi">businessLogicLogger</span>, <span class="pl-smi">book</span>) {
+  <span class="pl-smi">businessLogicLogger</span>.<span class="pl-c1">debug</span>(<span class="pl-s"><span class="pl-pds">"</span>new book<span class="pl-pds">"</span></span>);
+  <span class="pl-k">var</span> b <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">book</span>();
+  <span class="pl-smi">$scope</span>.<span class="pl-smi">books</span> <span class="pl-k">=</span> [b];
+})
+.<span class="pl-en">controller</span>(<span class="pl-s"><span class="pl-pds">"</span>appCtrl<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">$rootScope</span>, <span class="pl-smi">terseLogger</span>) {
+  <span class="pl-smi">$rootScope</span>.<span class="pl-smi">$on</span> <span class="pl-s"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(){
+    <span class="pl-smi">terseLogger</span>.<span class="pl-c1">error</span>(<span class="pl-s"><span class="pl-pds">"</span>something happened<span class="pl-pds">"</span></span>);
+  }
+});</pre></div>
+
+<h3>
+<a id="override-all-of-log-optional-decorator" class="anchor" href="#override-all-of-log-optional-decorator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Override all of $log (optional decorator)</h3>
+
+<p>Optionally (default is off) decorate $log to utilize log levels globally within the app.</p>
+
+<p>Note this logger's currentLevel is debug! Where the order is debug, info, warn, error, log.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">angular</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>someApp<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>nemLogging<span class="pl-pds">'</span></span>]))
+.<span class="pl-en">config</span>(<span class="pl-k">function</span>(<span class="pl-smi">$provide</span>, <span class="pl-smi">nemSimpleLoggerProvider</span>) {
+  <span class="pl-k">return</span> <span class="pl-smi">$provide</span>.<span class="pl-smi">decorator</span>.<span class="pl-c1">apply</span>(<span class="pl-c1">null</span>, <span class="pl-smi">nemSimpleLoggerProvider</span>.<span class="pl-smi">decorator</span>);
+})
+.<span class="pl-en">config</span>(<span class="pl-k">function</span>(<span class="pl-smi">$provide</span>, <span class="pl-smi">nemSimpleLoggerProvider</span>) {
+  <span class="pl-k">var</span> logger <span class="pl-k">=</span> <span class="pl-smi">$provide</span>.<span class="pl-smi">decorator</span>.<span class="pl-c1">apply</span>(<span class="pl-c1">null</span>, <span class="pl-smi">nemSimpleLoggerProvider</span>.<span class="pl-smi">decorator</span>);
+  <span class="pl-c">//override level at config</span>
+  <span class="pl-smi">logger</span>.<span class="pl-smi">currentLevel</span> <span class="pl-k">=</span> <span class="pl-smi">logger</span>.<span class="pl-c1">LEVELS</span>.<span class="pl-smi">error</span>;
+  <span class="pl-k">return</span> logger;
+})
+.<span class="pl-en">run</span>(<span class="pl-k">function</span>(<span class="pl-smi">$log</span>){
+  <span class="pl-c">//at run time</span>
+  <span class="pl-c">//override the default log level globally</span>
+  <span class="pl-smi">$log</span>.<span class="pl-smi">currentLevel</span> <span class="pl-k">=</span> <span class="pl-smi">$log</span>.<span class="pl-c1">LEVELS</span>.<span class="pl-smi">error</span>;
+});</pre></div>
+
+<h3>
+<a id="optional-debug-levels-via-debug" class="anchor" href="#optional-debug-levels-via-debug" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Optional Debug Levels via <a href="https://github.com/visionmedia/debug">debug</a>
+</h3>
+
+<p>If you choose to use the <a href="./dist/angular-simple-logger.js">full version of this library</a> and no the <a href="./dist/angular-simple-logger.light.js">light</a>.</p>
+
+<p>You can add finer grain debug levels via the <a href="https://github.com/visionmedia/debug">visionmedia/debug API</a>.</p>
+
+<p>To use:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">angular</span>.<span class="pl-en">module</span>(<span class="pl-s"><span class="pl-pds">'</span>someApp<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>nemLogging<span class="pl-pds">'</span></span>]))
+<span class="pl-c">//as a provider</span>
+.<span class="pl-en">config</span>(<span class="pl-k">function</span>(<span class="pl-smi">nemDebugProvider</span>) {
+  <span class="pl-k">var</span> debug <span class="pl-k">=</span> <span class="pl-smi">nemDebugProvider</span>.<span class="pl-smi">debug</span>;
+  <span class="pl-smi">debug</span>.<span class="pl-en">enable</span>(<span class="pl-s"><span class="pl-pds">"</span>worker:*<span class="pl-pds">"</span></span>);
+})
+.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">'</span>LoggerLevelA<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">nemSimpleLogger</span>) {
+  <span class="pl-c">//will have debug, info, warn, error, and log at disposal as before, but now debug is using the visionmedia/debug fn</span>
+  <span class="pl-k">return</span> <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-en">spawn</span>(<span class="pl-s"><span class="pl-pds">"</span>worker:a<span class="pl-pds">"</span></span>);
+})
+.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">'</span>LoggerLevelB<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">nemSimpleLogger</span>) {
+  <span class="pl-k">return</span> <span class="pl-smi">nemSimpleLogger</span>.<span class="pl-en">spawn</span>(<span class="pl-s"><span class="pl-pds">"</span>worker:b<span class="pl-pds">"</span></span>);
+})
+<span class="pl-c">//heck maybe you don't want all of the logger interface only want debug.. then</span>
+.<span class="pl-en">service</span>(<span class="pl-s"><span class="pl-pds">'</span>JustDebugC<span class="pl-pds">'</span></span>,<span class="pl-k">function</span>(<span class="pl-smi">nemDebug</span>) {
+  <span class="pl-k">return</span> <span class="pl-en">nemDebug</span>(<span class="pl-s"><span class="pl-pds">"</span>worker:c<span class="pl-pds">"</span></span>);
+})
+.<span class="pl-en">run</span>(<span class="pl-k">function</span>(<span class="pl-smi">nemDebug</span>){
+  <span class="pl-c">//enable another debug level</span>
+  <span class="pl-smi">nemDebug</span>.<span class="pl-en">enable</span>(<span class="pl-s"><span class="pl-pds">"</span>coolStuff:*<span class="pl-pds">"</span></span>);
+});</pre></div>
+
+<h3>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h3>
+
+<p>Underneath it all it is still calling <code>$log</code> so calling the logger for logging itself is the same.</p>
+
+<ul>
+<li><p>LEVELS: available are <code>debug, info, warn, error, log</code></p></li>
+<li><p>doLog (boolean) - deaults to true. If set to false all logging for that logger instance is disabled.</p></li>
+<li><p>currentLevel (number) - defaults to <code>error: 4</code> corresponds to the current log level provided by <code>LEVELS</code>.</p></li>
+<li><p>spawn - create a independent logger accepts a logger or a string (see visionmedia debug notes above). Defaults to $log</p></li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/nmccready/angular-simple-logger">Angular-simple-logger</a> is maintained by <a href="https://github.com/nmccready">nmccready</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-72902950-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>

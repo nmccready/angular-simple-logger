@@ -34,6 +34,7 @@
     "scripts",
     "node_modules",
     "bower_components",
-    "tmp"
+    "tmp",
+    "stylesheets"
   ]
 }
