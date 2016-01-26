@@ -1,6 +1,7 @@
 angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (nemDebugProvider) ->
 
   nemDebug = nemDebugProvider.debug
+  _debugCache = {}
 
   _fns = ['debug', 'info', 'warn', 'error', 'log']
   LEVELS = {}
@@ -18,16 +19,15 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
       break unless isValid
     isValid
 
-_debugCache = {}
 
   ###
     Overide logeObject.debug with a nemDebug instance
     see: https://github.com/visionmedia/debug/blob/master/Readme.md
   ###
-  _wrapDebug = (debugStrLevel, logObject) ->
+  _wrapDebug = (namespace, logObject) ->
     # need to cache debugInstance in order to get consistent color; this could be considered a bug in the debug module
     if !_debugCache[namespace]?
-      _debugCache[namespace] = nemDebug(debugStrLevel)
+      _debugCache[namespace] = nemDebug(namespace)
     debugInstance = _debugCache[namespace]
     newLogger = {}
     for val in _fns
@@ -43,10 +43,10 @@ _debugCache = {}
 
       for level in _fns
         do (level) =>
-          logFns[level] = (msg) =>
+          logFns[level] = () =>
             if @doLog
               _maybeExecLevel LEVELS[level], @currentLevel, =>
-                @$log[level](msg)
+                @$log[level](arguments...)
           @[level] = logFns[level]
 
       @LEVELS = LEVELS

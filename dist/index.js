@@ -3,7 +3,7 @@
  *
  * @version: 0.1.5
  * @author: Nicholas McCready
- * @date: Wed Oct 21 2015 12:47:46 GMT-0400 (EDT)
+ * @date: Tue Jan 26 2016 09:07:08 GMT-0500 (EST)
  * @license: MIT
  */
 var angular = require('angular');
@@ -28,8 +28,9 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
 
 angular.module('nemLogging').provider('nemSimpleLogger', [
   'nemDebugProvider', function(nemDebugProvider) {
-    var LEVELS, Logger, _fns, _isValidLogObject, _maybeExecLevel, _wrapDebug, i, key, len, nemDebug, val;
+    var LEVELS, Logger, _debugCache, _fns, _isValidLogObject, _maybeExecLevel, _wrapDebug, i, key, len, nemDebug, val;
     nemDebug = nemDebugProvider.debug;
+    _debugCache = {};
     _fns = ['debug', 'info', 'warn', 'error', 'log'];
     LEVELS = {};
     for (key = i = 0, len = _fns.length; i < len; key = ++i) {
@@ -61,9 +62,12 @@ angular.module('nemLogging').provider('nemSimpleLogger', [
       Overide logeObject.debug with a nemDebug instance
       see: https://github.com/visionmedia/debug/blob/master/Readme.md
      */
-    _wrapDebug = function(debugStrLevel, logObject) {
+    _wrapDebug = function(namespace, logObject) {
       var debugInstance, j, len1, newLogger;
-      debugInstance = nemDebug(debugStrLevel);
+      if (_debugCache[namespace] == null) {
+        _debugCache[namespace] = nemDebug(namespace);
+      }
+      debugInstance = _debugCache[namespace];
       newLogger = {};
       for (j = 0, len1 = _fns.length; j < len1; j++) {
         val = _fns[j];
@@ -86,10 +90,11 @@ angular.module('nemLogging').provider('nemSimpleLogger', [
         logFns = {};
         fn1 = (function(_this) {
           return function(level) {
-            logFns[level] = function(msg) {
+            logFns[level] = function() {
               if (_this.doLog) {
                 return _maybeExecLevel(LEVELS[level], _this.currentLevel, function() {
-                  return _this.$log[level](msg);
+                  var ref;
+                  return (ref = _this.$log)[level].apply(ref, arguments);
                 });
               }
             };
