@@ -3,7 +3,7 @@
  *
  * @version: 0.1.6
  * @author: Nicholas McCready
- * @date: Tue Jan 26 2016 09:10:31 GMT-0500 (EST)
+ * @date: Tue Jan 26 2016 10:13:45 GMT-0500 (EST)
  * @license: MIT
  */
 var angular = require('angular');
@@ -24,7 +24,8 @@ angular.module('nemLogging').provider('nemDebug', function (){
 
   return this;
 });
-var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  slice = [].slice;
 
 angular.module('nemLogging').provider('nemSimpleLogger', [
   'nemDebugProvider', function(nemDebugProvider) {
@@ -91,10 +92,12 @@ angular.module('nemLogging').provider('nemSimpleLogger', [
         fn1 = (function(_this) {
           return function(level) {
             logFns[level] = function() {
+              var args;
+              args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
               if (_this.doLog) {
                 return _maybeExecLevel(LEVELS[level], _this.currentLevel, function() {
                   var ref;
-                  return (ref = _this.$log)[level].apply(ref, arguments);
+                  return (ref = _this.$log)[level].apply(ref, args);
                 });
               }
             };

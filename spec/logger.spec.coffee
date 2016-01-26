@@ -1,3 +1,4 @@
+###global spyOn:true, angular:true, inject:true, expect:true###
 describe 'nemLogging.nemSimpleLogger', ->
   beforeEach ->
     @createSpyLogger = ->
@@ -30,25 +31,15 @@ describe 'nemLogging.nemSimpleLogger', ->
     expect(@subject).toBeDefined()
 
   describe 'default', ->
-    it 'debug', ->
-      @subject.debug('blah')
-      expect(@loggger.debug).not.toHaveBeenCalled()
-
-    it 'info', ->
-      @subject.info('blah')
-      expect(@loggger.info).not.toHaveBeenCalled()
-
-    it 'warn', ->
-      @subject.warn('blah')
-      expect(@loggger.warn).not.toHaveBeenCalled()
-
-    it 'error', ->
-      @subject.error('blah')
-      expect(@loggger.error).toHaveBeenCalled()
-
-    it 'log', ->
-      @subject.log('blah')
-      expect(@loggger.log).toHaveBeenCalled()
+    ['debug', 'info', 'warn', {called:'error'}, {called:'log'}].forEach (testName) ->
+      {called} = testName
+      testName = if typeof testName == 'string' then testName else testName.called
+      it testName, ->
+        @subject[testName]('blah')
+        if called
+          expect(@loggger[testName]).toHaveBeenCalled()
+          return expect(@loggger[testName]).toHaveBeenCalledWith('blah')
+        expect(@loggger[testName]).not.toHaveBeenCalled()
 
 
   describe 'all on', ->
@@ -56,26 +47,19 @@ describe 'nemLogging.nemSimpleLogger', ->
       inject (nemSimpleLogger) =>
         nemSimpleLogger.currentLevel = nemSimpleLogger.LEVELS.debug
         @subject = nemSimpleLogger
+    describe 'single arg', ->
+      ['debug', 'info', 'warn', 'error', 'log'].forEach (testName) ->
+        it testName, ->
+          @subject[testName]('blah')
+          expect(@loggger[testName]).toHaveBeenCalled()
+          expect(@loggger[testName]).toHaveBeenCalledWith('blah')
 
-    it 'debug', ->
-      @subject.debug('blah')
-      expect(@loggger.debug).toHaveBeenCalled()
-
-    it 'info', ->
-      @subject.info('blah')
-      expect(@loggger.info).toHaveBeenCalled()
-
-    it 'warn', ->
-      @subject.warn('blah')
-      expect(@loggger.warn).toHaveBeenCalled()
-
-    it 'error', ->
-      @subject.error('blah')
-      expect(@loggger.error).toHaveBeenCalled()
-
-    it 'log', ->
-      @subject.log('blah')
-      expect(@loggger.log).toHaveBeenCalled()
+    describe 'multi arg', ->
+      ['debug', 'info', 'warn', 'error', 'log'].forEach (testName) ->
+        it testName, ->
+          @subject[testName]('blah','HI')
+          expect(@loggger[testName]).toHaveBeenCalled()
+          expect(@loggger[testName]).toHaveBeenCalledWith('blah', 'HI')
 
   describe 'all off', ->
     describe 'by LEVELS +1', ->
@@ -84,25 +68,10 @@ describe 'nemLogging.nemSimpleLogger', ->
           nemSimpleLogger.currentLevel = nemSimpleLogger.LEVELS.log + 1
           @subject = nemSimpleLogger
 
-      it 'debug', ->
-        @subject.debug('blah')
-        expect(@loggger.debug).not.toHaveBeenCalled()
-
-      it 'info', ->
-        @subject.info('blah')
-        expect(@loggger.info).not.toHaveBeenCalled()
-
-      it 'warn', ->
-        @subject.warn('blah')
-        expect(@loggger.warn).not.toHaveBeenCalled()
-
-      it 'error', ->
-        @subject.error('blah')
-        expect(@loggger.error).not.toHaveBeenCalled()
-
-      it 'log', ->
-        @subject.log('blah')
-        expect(@loggger.log).not.toHaveBeenCalled()
+      ['debug', 'info', 'warn', 'error', 'log'].forEach (testName) ->
+        it testName, ->
+          @subject[testName]('blah')
+          expect(@loggger[testName]).not.toHaveBeenCalled()
 
     describe 'by doLog', ->
       beforeEach ->
@@ -110,25 +79,10 @@ describe 'nemLogging.nemSimpleLogger', ->
           nemSimpleLogger.doLog = false
           @subject = nemSimpleLogger
 
-      it 'debug', ->
-        @subject.debug('blah')
-        expect(@loggger.debug).not.toHaveBeenCalled()
-
-      it 'info', ->
-        @subject.info('blah')
-        expect(@loggger.info).not.toHaveBeenCalled()
-
-      it 'warn', ->
-        @subject.warn('blah')
-        expect(@loggger.warn).not.toHaveBeenCalled()
-
-      it 'error', ->
-        @subject.error('blah')
-        expect(@loggger.error).not.toHaveBeenCalled()
-
-      it 'log', ->
-        @subject.log('blah')
-        expect(@loggger.log).not.toHaveBeenCalled()
+      ['debug', 'info', 'warn', 'error', 'log'].forEach (testName) ->
+        it testName, ->
+          @subject[testName]('blah')
+          expect(@loggger[testName]).not.toHaveBeenCalled()
 
   describe 'spawn', ->
     beforeEach ->

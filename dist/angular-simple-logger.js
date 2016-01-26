@@ -15,7 +15,8 @@ angular.module('nemLogging').provider('nemDebug', function (){
 
   return this;
 });
-var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  slice = [].slice;
 
 angular.module('nemLogging').provider('nemSimpleLogger', [
   'nemDebugProvider', function(nemDebugProvider) {
@@ -82,10 +83,12 @@ angular.module('nemLogging').provider('nemSimpleLogger', [
         fn1 = (function(_this) {
           return function(level) {
             logFns[level] = function() {
+              var args;
+              args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
               if (_this.doLog) {
                 return _maybeExecLevel(LEVELS[level], _this.currentLevel, function() {
                   var ref;
-                  return (ref = _this.$log)[level].apply(ref, arguments);
+                  return (ref = _this.$log)[level].apply(ref, args);
                 });
               }
             };

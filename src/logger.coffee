@@ -43,10 +43,10 @@ angular.module('nemLogging').provider 'nemSimpleLogger',[ 'nemDebugProvider', (n
 
       for level in _fns
         do (level) =>
-          logFns[level] = () =>
+          logFns[level] = (args...) =>
             if @doLog
               _maybeExecLevel LEVELS[level], @currentLevel, =>
-                @$log[level](arguments...)
+                @$log[level](args...)
           @[level] = logFns[level]
 
       @LEVELS = LEVELS
