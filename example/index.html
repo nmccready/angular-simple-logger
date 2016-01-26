@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org/" ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <title>AngularJS Plunker</title>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script type='text/javascript' src="../dist/angular-simple-logger.js"></script>
+    <script>
+      angular.module('app', ['nemLogging'])
+      .config(function(nemDebugProvider) {
+        var debug = nemDebugProvider.debug;
+        debug.enable("app:*");
+      })
+      .config(function($provide, nemSimpleLoggerProvider) {
+        //override $log with extended $log
+        return $provide.decorator.apply(null, nemSimpleLoggerProvider.decorator);
+      })
+      .controller('mainCtrl', function ($log) {
+        $log = $log.spawn("app:mainCtrl");
+        $log.debug("test");
+      })
+      .controller('childCtrl1', function ($log) {
+        $log = $log.spawn("app:childCtrl1");
+        $log.debug("test");
+      })
+      .controller('childCtrl2', function ($log) {
+        $log = $log.spawn("app:childCtrl2");
+        $log.debug("test");
+      });
+    </script>
+</head>
+
+<body ng-controller="mainCtrl">
+  <div ng-controller="childCtrl1"></div>
+  <div ng-controller="childCtrl2"></div>
+</body>
+
+</html>
