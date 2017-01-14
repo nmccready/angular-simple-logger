@@ -11,7 +11,7 @@ angular-simple-logger (nemLogging.nemSimpleLogger)
 ### Purpose:
 To have simplified log levels where a supporting angular module's log levels are independent of the application.
 
-### Dependencies: (What can make what was simple/complicated (kinda))
+### Dependencies: (What can we make what was once simple/complicated (kinda))
 
 How to decide which file from `/dist` to include in your project:
 
